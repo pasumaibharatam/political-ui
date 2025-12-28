@@ -1,0 +1,32 @@
+.features-section {
+  padding: 60px 30px;
+  text-align: center;
+  background: #fafafa;
+}
+
+.features-section h2 {
+  color: #1b5e20;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.features-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.feature-card {
+  background: #fff;
+  padding: 22px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.feature-card img {
+  width: 60px;
+  margin-bottom: 12px;
+}
+.features {
+  margin-top: 80px;
+}
