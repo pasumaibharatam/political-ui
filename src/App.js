@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
-import Register from "./pages/Registerold";
+import Register from "./pages/Register";
 import DownloadID from "./pages/DownloadID";
 import AdminCandidates from "./pages/AdminCandidates";
 import AdminDashboard from "./pages/AdminDashboard";
