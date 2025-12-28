@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const AdminCandidates = () => {
   const [candidates, setCandidates] = useState([]);
 
   const fetchCandidates = () => {
-    fetch("https://political-backend-wvrc.onrender.com/candidates")
+    fetch(`${BACKEND_URL}/candidates`)
       .then(res => res.json())
       .then(data => setCandidates(data))
       .catch(err => console.error(err));
@@ -17,7 +17,7 @@ const AdminCandidates = () => {
   const deleteCandidate = (mobile) => {
     if (!window.confirm("Are you sure you want to delete this candidate?")) return;
 
-    fetch(`https://political-backend-wvrc.onrender.com/candidates/${mobile}`, {
+    fetch(`${BACKEND_URL}/candidates/${mobile}`, {
       method: "DELETE",
     })
       .then(res => {
@@ -56,7 +56,7 @@ const AdminCandidates = () => {
               <td>
                 {c.photo && (
                   <img
-                    src={`https://political-backend-wvrc.onrender.com/${c.photo}`}
+                    src={`${BACKEND_URL}/${c.photo}`}
                     alt="photo"
                     width="60"
                   />

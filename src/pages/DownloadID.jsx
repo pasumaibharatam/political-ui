@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./DownloadID.css";
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const DownloadID = () => {
   const [mobile, setMobile] = useState("");
   const [error, setError] = useState("");
@@ -13,7 +14,7 @@ const DownloadID = () => {
     //   );
     try {
   const response = await fetch(
-    `https://political-backend-wvrc.onrender.com/download-id/${mobile}`
+    `${BACKEND_URL}/download-id/${mobile}`
   );
 
       if (!response.ok) {

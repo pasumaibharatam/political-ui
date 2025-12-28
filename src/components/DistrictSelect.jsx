@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 const DistrictSelect = ({ value, onChange }) => {
   const [districts, setDistricts] = useState([]);
   const [loading, setLoading] = useState(true);
-
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   useEffect(() => {
-    fetch("https://political-backend-wvrc.onrender.com/districts")
+    fetch(`${BACKEND_URL}/districts`)
       .then((res) => res.json())
       .then((data) => {
         // Ensure all district names are strings

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import DistrictSelect from "../components/DistrictSelect";
 import "./Register.css";
-const BACKEND_URL = "https://political-backend-wvrc.onrender.com";
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",

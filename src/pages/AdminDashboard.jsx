@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const AdminDashboard = () => {
   const [candidates, setCandidates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("https://political-backend-wvrc.onrender.com/candidates")
+    fetch(`${BACKEND_URL}/candidates`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to fetch candidates");
@@ -27,7 +27,7 @@ const AdminDashboard = () => {
   //   window.open(`http://127.0.0.1:8000/download-id/${mobile}`, "_blank");
   // };
    const downloadID = (mobile) => {
-    window.open(`https://political-backend-wvrc.onrender.com/download-id/${mobile}`, "_blank");
+    window.open(`${BACKEND_URL}/download-id/${mobile}`, "_blank");
   };
 
   if (loading) return <p>Loading candidates...</p>;
