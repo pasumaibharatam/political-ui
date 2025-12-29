@@ -15,7 +15,12 @@ const Admin = () => {
 
   // FETCH DATA SAFELY
 useEffect(() => {
-  fetch(`${BACKEND_URL}/admin`)
+   const token = localStorage.getItem("admin_token");
+  fetch(`${BACKEND_URL}/admin`, {
+    headers: {
+      token: token,
+    },
+  })
     .then(async (res) => {
       const data = await res.json();
 
