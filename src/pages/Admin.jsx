@@ -14,23 +14,28 @@ const Admin = () => {
   const [ageRange, setAgeRange] = useState("All");
 
   // FETCH DATA SAFELY
-  useEffect(() => {
-    fetch(`${BACKEND_URL}/admin`)
-      .then((res) => {
-        if (!res.ok) throw new Error("API error");
-        return res.json();
-      })
-      .then((data) => {
-        setCandidates(Array.isArray(data) ? data : []);
-        setFiltered(Array.isArray(data) ? data : []);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError("Failed to load candidates");
-        setLoading(false);
-      });
-  }, []);
+useEffect(() => {
+  fetch(`${BACKEND_URL}/admin`)
+    .then(async (res) => {
+      const data = await res.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("API did not return array");
+      }
+
+      setCandidates(data);
+      setFiltered(data);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error("Admin API error:", err);
+      setError("Failed to load candidates");
+      setCandidates([]);
+      setFiltered([]);
+      setLoading(false);
+    });
+}, []);
+
 
   // APPLY FILTERS SAFELY
   useEffect(() => {
