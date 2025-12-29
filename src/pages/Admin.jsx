@@ -15,7 +15,7 @@ const Admin = () => {
 
   // FETCH DATA SAFELY
   useEffect(() => {
-    fetch(`${BACKEND_URL}/admin/candidates`)
+    fetch(`${BACKEND_URL}/admin`)
       .then((res) => {
         if (!res.ok) throw new Error("API error");
         return res.json();
