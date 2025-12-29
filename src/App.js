@@ -4,8 +4,7 @@ import Home from "./components/Home";
 // import Register from "./pages/Registerold";
 import Register from "./pages/Register"
 import DownloadID from "./pages/DownloadID";
-import AdminCandidates from "./pages/AdminCandidates";
-import AdminDashboard from "./pages/AdminDashboard";
+import Admin from "./pages/Admin";
 import Footer from "./components/Footer";
 
 function App() {
@@ -16,8 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
          <Route path="/download-id" element={<DownloadID />} />
-         <Route path="/admin/candidates" element={<AdminCandidates />} />
-         <Route path="/admin" element={<AdminDashboard />} />
+         <Route path="/admin" element={<Admin />} />
       </Routes>
       
       <Footer />
