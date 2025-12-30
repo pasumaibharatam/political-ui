@@ -18,7 +18,7 @@ function App() {
         <Route path="/register" element={<Register />} />
          <Route path="/download-id" element={<DownloadID />} />
          <Route path="/admin" element={<Admin />} />
-         <Route path="/admin/login" element={<AdminLogin/>}/>
+         <Route path="/admin/admin-login" element={<AdminLogin/>}/>
       </Routes>
       
       <Footer />
