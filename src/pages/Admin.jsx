@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const BACKEND_URL =
-  process.env.REACT_APP_BACKEND_URL || "http://127.0.0.1:8000";
+  process.env.REACT_APP_BACKEND_URL || "https://your-backend.onrender.com";
 
 const Admin = () => {
   const [candidates, setCandidates] = useState([]);
@@ -13,36 +13,51 @@ const Admin = () => {
   const [gender, setGender] = useState("All");
   const [ageRange, setAgeRange] = useState("All");
 
-  // FETCH DATA SAFELY
-useEffect(() => {
-   const token = localStorage.getItem("admin_token");
-  fetch(`${BACKEND_URL}/admin`, {
-    headers: {
-      token: token,
-    },
-  })
-    .then(async (res) => {
-      const data = await res.json();
+  // 🔐 AUTH + FETCH DATA
+  useEffect(() => {
+    const token = localStorage.getItem("admin_token");
 
-      if (!Array.isArray(data)) {
-        throw new Error("API did not return array");
-      }
+    // 🚫 If no token → redirect
+    if (!token) {
+      window.location.href = "/admin-login";
+      return;
+    }
 
-      setCandidates(data);
-      setFiltered(data);
-      setLoading(false);
+    fetch(`${BACKEND_URL}/admin`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
-    .catch((err) => {
-      console.error("Admin API error:", err);
-      setError("Failed to load candidates");
-      setCandidates([]);
-      setFiltered([]);
-      setLoading(false);
-    });
-}, []);
+      .then(async (res) => {
+        if (!res.ok) {
+          throw new Error("Unauthorized or server error");
+        }
 
+        const data = await res.json();
 
-  // APPLY FILTERS SAFELY
+        if (!Array.isArray(data)) {
+          console.error("API response is not array:", data);
+          throw new Error("Invalid data format");
+        }
+
+        setCandidates(data);
+        setFiltered(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Admin API error:", err);
+        setError("Failed to load candidates");
+        setLoading(false);
+
+        // ❌ Invalid token → logout
+        if (err.message.includes("Unauthorized")) {
+          localStorage.removeItem("admin_token");
+          window.location.href = "/admin-login";
+        }
+      });
+  }, []);
+
+  // 🎯 APPLY FILTERS
   useEffect(() => {
     let data = [...candidates];
 
@@ -69,17 +84,19 @@ useEffect(() => {
     setFiltered(data);
   }, [district, gender, ageRange, candidates]);
 
+  // 📍 DISTRICTS
   const districts = [
     "All",
     ...new Set(candidates.map((c) => c?.district).filter(Boolean)),
   ];
 
+  // 📄 DOWNLOAD ID
   const downloadId = (mobile) => {
     if (!mobile) return;
     window.open(`${BACKEND_URL}/download-id/${mobile}`, "_blank");
   };
 
-  // 🟡 STATES
+  // ⏳ STATES
   if (loading) return <p style={{ padding: 20 }}>Loading dashboard...</p>;
   if (error) return <p style={{ padding: 20, color: "red" }}>{error}</p>;
 
@@ -87,7 +104,7 @@ useEffect(() => {
     <div style={styles.container}>
       <h2 style={styles.heading}>Admin Dashboard</h2>
 
-      {/* FILTERS */}
+      {/* 🔎 FILTERS */}
       <div style={styles.filters}>
         <select onChange={(e) => setDistrict(e.target.value)}>
           {districts.map((d) => (
@@ -111,14 +128,14 @@ useEffect(() => {
         </select>
       </div>
 
-      {/* SUMMARY */}
+      {/* 📊 SUMMARY */}
       <div style={styles.summary}>
         <span>Total: {filtered.length}</span>
         <span>Men: {filtered.filter((c) => c.gender === "Male").length}</span>
         <span>Women: {filtered.filter((c) => c.gender === "Female").length}</span>
       </div>
 
-      {/* CARDS */}
+      {/* 🧾 CARDS */}
       <div style={styles.cardGrid}>
         {filtered.length === 0 ? (
           <p>No records found</p>
@@ -147,8 +164,18 @@ useEffect(() => {
 const styles = {
   container: { padding: 15 },
   heading: { color: "#1B5E20" },
-  filters: { display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 10 },
-  summary: { display: "flex", gap: 15, fontWeight: "bold", marginBottom: 15 },
+  filters: {
+    display: "flex",
+    gap: 10,
+    flexWrap: "wrap",
+    marginBottom: 10,
+  },
+  summary: {
+    display: "flex",
+    gap: 15,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
   cardGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
@@ -168,6 +195,7 @@ const styles = {
     color: "#fff",
     border: "none",
     borderRadius: 8,
+    cursor: "pointer",
   },
 };
 
