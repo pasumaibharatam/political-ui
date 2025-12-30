@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const BACKEND_URL =
-  process.env.REACT_APP_BACKEND_URL || "https://your-backend.onrender.com";
+  process.env.REACT_APP_BACKEND_URL || "https://political-backend-wvrc.onrender.com/";
 
 const Admin = () => {
   const [candidates, setCandidates] = useState([]);
