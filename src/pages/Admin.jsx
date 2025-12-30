@@ -13,7 +13,7 @@ const Admin = () => {
     const token = localStorage.getItem("admin_token");
 
     if (!token) {
-      navigate("/admin/login");
+      navigate("/admin/admin-login");
       return;
     }
 
@@ -25,7 +25,7 @@ const Admin = () => {
       .then(async (res) => {
         if (res.status === 401 || res.status === 403) {
           localStorage.removeItem("admin_token");
-          navigate("/admin/login");
+          navigate("/admin/admin-login");
           return;
         }
 
@@ -49,7 +49,7 @@ const Admin = () => {
       <button
         onClick={() => {
           localStorage.removeItem("admin_token");
-          navigate("/admin/login");
+          navigate("/admin/admin-login");
         }}
       >
         Logout
