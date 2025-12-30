@@ -19,8 +19,8 @@ const Admin = () => {
 
     // 🚫 If no token → redirect
     if (!token) {
-      window.location.href = "/admin-login";
-      return;
+       navigate("/admin-login");
+      
     }
 
     fetch(`${BACKEND_URL}/admin`, {
@@ -55,7 +55,7 @@ const Admin = () => {
           window.location.href = "/admin-login";
         }
       });
-  }, []);
+  }, [navigate]);
 
   // 🎯 APPLY FILTERS
   useEffect(() => {
