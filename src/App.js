@@ -6,6 +6,8 @@ import Register from "./pages/Register"
 import DownloadID from "./pages/DownloadID";
 import Admin from "./pages/Admin";
 import Footer from "./components/Footer";
+import AdminLogin from "./pages/AdminLogin";
+
 
 function App() {
   return (
@@ -16,6 +18,7 @@ function App() {
         <Route path="/register" element={<Register />} />
          <Route path="/download-id" element={<DownloadID />} />
          <Route path="/admin" element={<Admin />} />
+         <Route path="/admin/login" element={<AdminLogin/>}/>
       </Routes>
       
       <Footer />
