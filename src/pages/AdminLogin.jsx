@@ -27,6 +27,7 @@ const AdminLogin = () => {
       });
 
       if (!res.ok) {
+         console.log(username,password);
         throw new Error("Invalid credentials");
       }
 
@@ -43,7 +44,7 @@ const AdminLogin = () => {
       window.location.href = "/admin";
     } catch (err) {
       console.error("Login error:", err);
-      console.log(username,password);
+     
       setError("Invalid username or password");
     } finally {
       setLoading(false);
