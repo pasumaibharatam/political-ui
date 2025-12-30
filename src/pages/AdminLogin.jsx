@@ -30,7 +30,7 @@ const AdminLogin = () => {
       }
 
       const data = await res.json();
-
+ console.log("LOGIN RESPONSE:", data);
       // ✅ SAVE TOKEN
       localStorage.setItem("admin_token", data.token);
 
