@@ -28,7 +28,7 @@ const Footer = () => {
         {/* Right */}
         <div className="footer-section">
           <h4>Contact</h4>
-          <p>📞 +91 98765 43210</p>
+          <p>📞 +91 82486 26406</p>
           <p>📧 support@pasumaibharatham.org</p>
           <p>📍 Tamil Nadu, India</p>
         </div>

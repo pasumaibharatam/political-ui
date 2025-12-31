@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const BACKEND_URL = "https://political-backend-wvrc.onrender.com";
+const BACKEND_URL = "http://127.0.0.1:8000";
 
 const AdminLogin = () => {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
-      const res = await fetch(`${BACKEND_URL}/admin/admin-login`, {
+      const res = await fetch(`${BACKEND_URL}/admin/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,56 +28,73 @@ const AdminLogin = () => {
         }),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        throw new Error("Invalid credentials");
+        throw new Error(data.detail || "Login failed");
       }
 
-      const data = await res.json();
- console.log("LOGIN RESPONSE:", data);
-      // ✅ SAVE TOKEN
+      // Save JWT token
       localStorage.setItem("admin_token", data.token);
 
-      // ✅ REDIRECT
+      // Redirect to admin dashboard
       navigate("/admin");
-
     } catch (err) {
-      setError("Wrong username or password");
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "80px auto" }}>
+    <div style={styles.container}>
       <h2>Admin Login</h2>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleLogin} style={styles.form}>
         <input
           type="text"
           placeholder="Username"
           value={username}
-          autoComplete="username"
-          required
           onChange={(e) => setUsername(e.target.value)}
-          style={{ width: "100%", padding: 10, marginBottom: 15 }}
+          required
         />
 
         <input
           type="password"
           placeholder="Password"
           value={password}
-          autoComplete="current-password"
-          required
           onChange={(e) => setPassword(e.target.value)}
-          style={{ width: "100%", padding: 10, marginBottom: 15 }}
+          required
         />
 
-        <button style={{ width: "100%", padding: 10 }}>
-          Login
+        {error && <p style={styles.error}>{error}</p>}
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
         </button>
       </form>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    maxWidth: "350px",
+    margin: "80px auto",
+    padding: "20px",
+    border: "1px solid #ccc",
+    borderRadius: "8px",
+    textAlign: "center",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+  },
+  error: {
+    color: "red",
+    fontSize: "14px",
+  },
 };
 
 export default AdminLogin;
