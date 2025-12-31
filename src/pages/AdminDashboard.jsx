@@ -31,7 +31,7 @@ const AdminDashboard = () => {
 
   // Fetch candidates from backend
   useEffect(() => {
-    fetch("https://your-backend-render-url.onrender.com/admin", {
+    fetch("https://political-backend-wvrc.onrender.com/admin", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token")
       }
